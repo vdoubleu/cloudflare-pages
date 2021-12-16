@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import PostCard from "./postCard";
 import PostForm from "./postForm";
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer, Container } from "react-bootstrap";
 import "./feed.css";
 
-function Feed() {
+function Feed(props) {
   const [data, setData] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -21,7 +21,7 @@ function Feed() {
       body: JSON.stringify({
         title: postTitle,
         content: postContent,
-        username: 'vdoubleu',
+        username: props.username,
         id: postIdJson.id,
       }),
     });
@@ -56,27 +56,29 @@ function Feed() {
   }, []);
 
   return (
-    <div className="feed">
-      <div className="post-creator">
-        <PostForm onPost={makePost} toastMessage={setToastMessage} showToast={setShowToast} />
+    <Container>
+      <div className="feed">
+        <div className="post-creator">
+          <PostForm onPost={makePost} toastMessage={setToastMessage} showToast={setShowToast} />
+        </div>
+        <hr />
+        <div className="scroller">
+        {data.map(post => (
+          <PostCard key={post.id} 
+                id={post.id} 
+                content={post.content} 
+                title={post.title} 
+                username={post.username} 
+          />
+        ))}
+        </div>
+        <ToastContainer position={"top-end"}>
+        <Toast show={showToast} onClose={() => setShowToast(false)} delay={1500} autohide>
+          <Toast.Header> {toastMessage}  </Toast.Header>
+        </Toast>
+        </ToastContainer>
       </div>
-      <hr />
-      <div className="scroller">
-      {data.map(post => (
-        <PostCard key={post.id} 
-              id={post.id} 
-              content={post.content} 
-              title={post.title} 
-              username={post.username} 
-        />
-      ))}
-      </div>
-      <ToastContainer position={"top-end"}>
-      <Toast show={showToast} onClose={() => setShowToast(false)} delay={1500} autohide>
-        <Toast.Header> {toastMessage}  </Toast.Header>
-      </Toast>
-      </ToastContainer>
-    </div>
+    </Container>
   );
 }
 

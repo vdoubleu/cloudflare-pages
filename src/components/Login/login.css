@@ -1,0 +1,34 @@
+.login-position {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 60%;
+  max-width: 30em;
+}
+
+.button-pos {
+  margin-top: 1vh;
+}
+
+@media (max-width: 500px) {
+  .login-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-card {
+    width: 80%;
+  }
+}
+
+
+@media (max-width: 1000) {
+  .login-card {
+    width: 50%;
+  }
+}
