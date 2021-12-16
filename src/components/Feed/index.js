@@ -10,7 +10,7 @@ function Feed(props) {
   const [toastMessage, setToastMessage] = useState("");
 
   const makePost = async (postTitle, postContent) => {
-    const postIdResp = await fetch('https://worker.vdoubleu.workers.dev/posts/id');
+    const postIdResp = await fetch('https://worker.vdoubleu.workers.dev/posts/id/available');
     const postIdJson = await postIdResp.json();
 
     const response = await fetch('https://worker.vdoubleu.workers.dev/posts', {
@@ -27,7 +27,7 @@ function Feed(props) {
     });
 
     if (response.status === 201) {
-      await fetch('https://worker.vdoubleu.workers.dev/posts/id', {
+      await fetch('https://worker.vdoubleu.workers.dev/posts/id/available', {
         method: 'POST',
         body: JSON.stringify({
           id: postIdJson.id + 1,
@@ -40,6 +40,21 @@ function Feed(props) {
       setShowToast(true);
     } else {
       setToastMessage("Error creating post!");
+      setShowToast(true);
+    }
+  };
+
+  const deletePost = async (postId) => {
+    const response = await fetch(`https://worker.vdoubleu.workers.dev/posts/${postId}`, {
+      method: 'DELETE',
+    });
+
+    if (response.status === 200) {
+      await getData();
+      setToastMessage("Post successfully deleted!");
+      setShowToast(true);
+    } else {
+      setToastMessage("Error deleting post!");
       setShowToast(true);
     }
   };
@@ -69,13 +84,15 @@ function Feed(props) {
                 content={post.content} 
                 title={post.title} 
                 username={post.username} 
-          />
+                deletePost={deletePost}
+                currentUser={props.username} />  
         ))}
         </div>
+
         <ToastContainer position={"top-end"}>
-        <Toast show={showToast} onClose={() => setShowToast(false)} delay={1500} autohide>
-          <Toast.Header> {toastMessage}  </Toast.Header>
-        </Toast>
+          <Toast show={showToast} onClose={() => setShowToast(false)} delay={1500} autohide>
+            <Toast.Header> {toastMessage}  </Toast.Header>
+          </Toast>
         </ToastContainer>
       </div>
     </Container>
