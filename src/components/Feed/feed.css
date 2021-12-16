@@ -1,0 +1,20 @@
+.feed {
+  width: 50%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 1em;
+  border: 1px solid grey;
+  border-radius: 0;
+  background-color: #f2f2f2;
+  /*box-shadow: 0 0 10px #000;*/
+}
+
+.post-creator {
+  /*height: 10%;*/
+  margin: 1em 0;
+}
+
+.scroller {
+  margin: 1em 0;
+  /*height: 90%;*/
+}
