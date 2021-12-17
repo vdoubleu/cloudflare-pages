@@ -17,3 +17,7 @@
   margin: 1em 0;
   /*height: 90%;*/
 }
+
+.post-embedded-image {
+  max-width: 100%;
+}
