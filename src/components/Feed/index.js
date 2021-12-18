@@ -15,6 +15,7 @@ function Feed(props) {
 
     const response = await fetch('https://worker.vdoubleu.workers.dev/posts', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -60,7 +61,9 @@ function Feed(props) {
   };
 
   const getData = async () => {
-    const response = await fetch('https://worker.vdoubleu.workers.dev/posts');
+    const response = await fetch('https://worker.vdoubleu.workers.dev/posts', {
+      method: 'GET',
+    });
     const json = await response.json();
     json.reverse();
     setData(json);
