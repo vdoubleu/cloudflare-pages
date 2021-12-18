@@ -8,6 +8,7 @@ function Feed(props) {
   const [data, setData] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastBg, setToastBg] = useState("light");
 
   const makePost = async (postTitle, postContent) => {
     const postIdResp = await fetch(
@@ -40,8 +41,13 @@ function Feed(props) {
       await getData();
       setToastMessage("Post successfully created!");
       setShowToast(true);
+    } else if (response.status === 401) {
+      setToastMessage("You are not authorized to post with the current account, perhaps your session timed out? Please log in with another username");
+      setToastBg("danger");
+      setShowToast(true);
     } else {
       setToastMessage("Error creating post!");
+      setToastBg("danger");
       setShowToast(true);
     }
   };
@@ -60,6 +66,7 @@ function Feed(props) {
       setShowToast(true);
     } else {
       setToastMessage("Error deleting post!");
+      setToastBg("danger");
       setShowToast(true);
     }
   };
@@ -67,8 +74,13 @@ function Feed(props) {
   const getData = async () => {
     const response = await fetch("https://worker.vdoubleu.workers.dev/posts", {
       method: "GET",
+      headers: {
+        "pragma": "no-cache",
+        "Cache-Control": "no-cache",
+      }
     });
     const json = await response.json();
+    console.log(json);
     json.reverse();
     setData(json);
   };
@@ -102,10 +114,10 @@ function Feed(props) {
           ))}
         </div>
 
-        <ToastContainer position={"top-end"}>
+        <ToastContainer position={"top-end"} bg={toastBg}>
           <Toast
             show={showToast}
-            onClose={() => setShowToast(false)}
+            onClose={() => { setShowToast(false); setToastBg("light"); }}
             delay={1500}
             autohide
           >
