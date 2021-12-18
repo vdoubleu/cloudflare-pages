@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import PostCard from "./postCard";
 import PostForm from "./postForm";
 import { Toast, ToastContainer, Container } from "react-bootstrap";
@@ -10,14 +10,16 @@ function Feed(props) {
   const [toastMessage, setToastMessage] = useState("");
 
   const makePost = async (postTitle, postContent) => {
-    const postIdResp = await fetch('https://worker.vdoubleu.workers.dev/posts/id/available');
+    const postIdResp = await fetch(
+      "https://worker.vdoubleu.workers.dev/posts/id/available"
+    );
     const postIdJson = await postIdResp.json();
 
-    const response = await fetch('https://worker.vdoubleu.workers.dev/posts', {
-      method: 'POST',
-      credentials: 'include',
+    const response = await fetch("https://worker.vdoubleu.workers.dev/posts", {
+      method: "POST",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         title: postTitle,
@@ -28,13 +30,12 @@ function Feed(props) {
     });
 
     if (response.status === 201) {
-      await fetch('https://worker.vdoubleu.workers.dev/posts/id/available', {
-        method: 'POST',
+      await fetch("https://worker.vdoubleu.workers.dev/posts/id/available", {
+        method: "POST",
         body: JSON.stringify({
           id: postIdJson.id + 1,
         }),
       });
-
 
       await getData();
       setToastMessage("Post successfully created!");
@@ -46,9 +47,12 @@ function Feed(props) {
   };
 
   const deletePost = async (postId) => {
-    const response = await fetch(`https://worker.vdoubleu.workers.dev/posts/${postId}`, {
-      method: 'DELETE',
-    });
+    const response = await fetch(
+      `https://worker.vdoubleu.workers.dev/posts/${postId}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (response.status === 200) {
       await getData();
@@ -61,8 +65,8 @@ function Feed(props) {
   };
 
   const getData = async () => {
-    const response = await fetch('https://worker.vdoubleu.workers.dev/posts', {
-      method: 'GET',
+    const response = await fetch("https://worker.vdoubleu.workers.dev/posts", {
+      method: "GET",
     });
     const json = await response.json();
     json.reverse();
@@ -77,24 +81,35 @@ function Feed(props) {
     <Container>
       <div className="feed">
         <div className="post-creator">
-          <PostForm onPost={makePost} toastMessage={setToastMessage} showToast={setShowToast} />
+          <PostForm
+            onPost={makePost}
+            toastMessage={setToastMessage}
+            showToast={setShowToast}
+          />
         </div>
         <hr />
         <div className="scroller">
-        {data.map(post => (
-          <PostCard key={post.id} 
-                id={post.id} 
-                content={post.content} 
-                title={post.title} 
-                username={post.username} 
-                deletePost={deletePost}
-                currentUser={props.username} />  
-        ))}
+          {data.map((post) => (
+            <PostCard
+              key={post.id}
+              id={post.id}
+              content={post.content}
+              title={post.title}
+              username={post.username}
+              deletePost={deletePost}
+              currentUser={props.username}
+            />
+          ))}
         </div>
 
         <ToastContainer position={"top-end"}>
-          <Toast show={showToast} onClose={() => setShowToast(false)} delay={1500} autohide>
-            <Toast.Header> {toastMessage}  </Toast.Header>
+          <Toast
+            show={showToast}
+            onClose={() => setShowToast(false)}
+            delay={1500}
+            autohide
+          >
+            <Toast.Header> {toastMessage} </Toast.Header>
           </Toast>
         </ToastContainer>
       </div>
