@@ -10,13 +10,15 @@ function Feed(props) {
   const [toastMessage, setToastMessage] = useState("");
   const [toastBg, setToastBg] = useState("light");
 
+  const workerUrlBase = process.env.WORKER_URL_BASE;
+
   const makePost = async (postTitle, postContent) => {
     const postIdResp = await fetch(
       "https://worker.vdoubleu.workers.dev/posts/id/available"
     );
     const postIdJson = await postIdResp.json();
 
-    const response = await fetch("https://worker.vdoubleu.workers.dev/posts", {
+    const response = await fetch(workerUrlBase + "/posts", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -31,7 +33,7 @@ function Feed(props) {
     });
 
     if (response.status === 201) {
-      await fetch("https://worker.vdoubleu.workers.dev/posts/id/available", {
+      await fetch(workerUrlBase + "/posts/id/available", {
         method: "POST",
         body: JSON.stringify({
           id: postIdJson.id + 1,
@@ -54,7 +56,7 @@ function Feed(props) {
 
   const deletePost = async (postId) => {
     const response = await fetch(
-      `https://worker.vdoubleu.workers.dev/posts/${postId}`,
+      workerUrlBase + "/posts/" + postId,
       {
         method: "DELETE",
       }
@@ -72,7 +74,7 @@ function Feed(props) {
   };
 
   const getData = async () => {
-    const response = await fetch("https://worker.vdoubleu.workers.dev/posts", {
+    const response = await fetch(workerUrlBase + "/posts", {
       method: "GET",
       headers: {
         "pragma": "no-cache",
