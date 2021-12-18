@@ -11,10 +11,11 @@ function Feed(props) {
   const [toastBg, setToastBg] = useState("light");
 
   const workerUrlBase = process.env.WORKER_URL_BASE;
+  console.log(workerUrlBase);
 
   const makePost = async (postTitle, postContent) => {
     const postIdResp = await fetch(
-      "https://worker.vdoubleu.workers.dev/posts/id/available"
+      workerUrlBase + "/posts/id/available"
     );
     const postIdJson = await postIdResp.json();
 
