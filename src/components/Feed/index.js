@@ -11,8 +11,6 @@ function Feed(props) {
   const [toastBg, setToastBg] = useState("light");
 
   const workerUrlBase = process.env.REACT_APP_WORKER_URL_BASE;
-  console.log(process.env);
-  console.log(workerUrlBase);
 
   const makePost = async (postTitle, postContent) => {
     const postIdResp = await fetch(
@@ -84,7 +82,6 @@ function Feed(props) {
       }
     });
     const json = await response.json();
-    console.log(json);
     json.reverse();
     setData(json);
   };
