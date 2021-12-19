@@ -10,7 +10,7 @@ function Feed(props) {
   const [toastMessage, setToastMessage] = useState("");
   const [toastBg, setToastBg] = useState("light");
 
-  const workerUrlBase = process.env.WORKER_URL_BASE;
+  const workerUrlBase = process.env.REACT_APP_WORKER_URL_BASE;
   console.log(process.env);
   console.log(workerUrlBase);
 

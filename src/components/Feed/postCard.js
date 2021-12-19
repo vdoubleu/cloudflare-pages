@@ -38,7 +38,7 @@ function PostCard(props) {
     function replaceImageUrlWithImgTag(inputStr) {
       const str = inputStr + " "; // adding a whitespace at the end to make sure we don't miss the last image
       const urlRegex =
-        /(https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif)(\?([a-zA-Z0-9_]*=[a-zA-Z0-9_]*)(\&[a-zA-Z0-9_]*=[a-zA-Z0-9_]*)*)?\s)/g;
+        /(https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif)(\?([a-zA-Z0-9_]*=[a-zA-Z0-9_]*)(&[a-zA-Z0-9_]*=[a-zA-Z0-9_]*)*)?\s)/g;
       const allMatches = [...str.matchAll(urlRegex)];
       if (allMatches.length === 0) {
         return str;
@@ -53,7 +53,7 @@ function PostCard(props) {
       allIndexes.forEach((ind, i) => {
         blocks.push(str.substring(currInd, ind));
         blocks.push(
-          <img className="post-embedded-image" key={i} src={allMatchText[i]} />
+          <img className="post-embedded-image" key={i} src={allMatchText[i]} alt="user post" />
         );
         currInd = ind + allMatchTextLength[i];
       });
@@ -64,7 +64,7 @@ function PostCard(props) {
     }
 
     setPostContent(replaceImageUrlWithImgTag(content));
-  }, []);
+  }, [content]);
 
   return (
     <Card className="my-2">
