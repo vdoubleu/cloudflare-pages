@@ -11,6 +11,7 @@ function Feed(props) {
   const [toastBg, setToastBg] = useState("light");
 
   const workerUrlBase = process.env.WORKER_URL_BASE;
+  console.log(process.env);
   console.log(workerUrlBase);
 
   const makePost = async (postTitle, postContent) => {
